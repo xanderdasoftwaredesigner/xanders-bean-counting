@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Xanders Accounting Web Application - Track your finances">
+    <title>Xanders Bean Counting - Accounting App</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <h1 class="logo">Xanders Bean Counting</h1>
+                <ul class="nav-menu">
+                    <li><a href="#dashboard" class="nav-link active">Dashboard</a></li>
+                    <li><a href="#transactions" class="nav-link">Transactions</a></li>
+                    <li><a href="#reports" class="nav-link">Reports</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section id="dashboard" class="section active">
+            <h2>Dashboard</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Income</h3>
+                    <p class="stat-value" id="total-income">$0.00</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Expenses</h3>
+                    <p class="stat-value" id="total-expenses">$0.00</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Net Balance</h3>
+                    <p class="stat-value" id="net-balance">$0.00</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="transactions" class="section">
+            <h2>Transactions</h2>
+            <div class="transaction-form">
+                <h3>Add New Transaction</h3>
+                <form id="add-transaction-form">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" name="description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" name="amount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="source-account">Source Account (Where it's coming from)</label>
+                        <select id="source-account" name="source-account" required>
+                            <option value="Cash">Cash</option>
+                            <option value="Bank">Bank</option>
+                            <option value="Checking">Checking</option>
+                            <option value="Savings">Savings</option>
+                            <option value="Accounts Receivable">Accounts Receivable</option>
+                            <option value="Accounts Payable">Accounts Payable</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Loans Payable">Loans Payable</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="classification">Classification (Where it's going to)</label>
+                        <input type="text" id="classification" name="classification" list="classification-suggestions" placeholder="e.g., supplies, accounts receivable, rent expense" required>
+                        <datalist id="classification-suggestions">
+                            <option value="Cash">
+                            <option value="Accounts Receivable">
+                            <option value="Supplies">
+                            <option value="Equipment">
+                            <option value="Accounts Payable">
+                            <option value="Credit Card">
+                            <option value="Loans Payable">
+                            <option value="Sales Revenue">
+                            <option value="Service Revenue">
+                            <option value="Rent Expense">
+                            <option value="Utilities">
+                            <option value="Salaries">
+                            <option value="Insurance">
+                            <option value="Advertising">
+                        </datalist>
+                        <div id="account-type-preview" style="display: none; margin-top: 0.5rem; padding: 0.5rem; background: var(--background); border-radius: 4px; font-size: 0.875rem;"></div>
+                        <div id="override-panel" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--background); border: 1px solid var(--border-color); border-radius: 4px;">
+                            <h4 style="margin-top: 0; margin-bottom: 1rem;">Override AI Classification</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                <div>
+                                    <label for="override-type" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Type</label>
+                                    <select id="override-type" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                                        <option value="income">Income</option>
+                                        <option value="expense">Expense</option>
+                                        <option value="reclassification">Reclassification</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="override-account-type" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Account Type</label>
+                                    <select id="override-account-type" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                                        <option value="Asset">Asset</option>
+                                        <option value="Liability">Liability</option>
+                                        <option value="Owner's Equity">Owner's Equity</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                                <input type="checkbox" id="override-remember" checked>
+                                <span>Remember this mapping for future transactions</span>
+                            </label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button type="button" class="btn btn-primary" onclick="app.applyOverride()">Apply</button>
+                                <button type="button" class="btn" onclick="app.hideOverridePanel()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Transaction</button>
+                </form>
+            </div>
+            <div class="transaction-list">
+                <h3>Recent Transactions</h3>
+                <table id="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Source</th>
+                            <th>Classification</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions-body">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="reports" class="section">
+            <h2>Reports</h2>
+            <div class="report-summary">
+                <h3>Monthly Summary</h3>
+                <div id="monthly-summary">
+                    <p>No data available yet. Add some transactions to see your reports.</p>
+                </div>
+            </div>
+            <div style="margin-top: 2rem; padding: 1rem; background: var(--background); border: 1px solid var(--border-color); border-radius: 4px;">
+                <h3>AI Agent Settings</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Manage the AI classification agent's learned mappings. The agent learns from your corrections to improve future classifications.</p>
+                <button class="btn btn-danger" onclick="app.resetLearnedMappings()">Reset Learned Mappings</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Xanders Bean Counting. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
