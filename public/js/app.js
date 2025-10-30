@@ -1,67 +1,67 @@
 class AccountingClassifier {
     constructor() {
         this.predefinedMappings = {
-            'cash': { accountType: 'Asset', category: 'Current Asset' },
-            'petty cash': { accountType: 'Asset', category: 'Current Asset' },
-            'bank': { accountType: 'Asset', category: 'Current Asset' },
-            'checking': { accountType: 'Asset', category: 'Current Asset' },
-            'savings': { accountType: 'Asset', category: 'Current Asset' },
-            'accounts receivable': { accountType: 'Asset', category: 'Current Asset' },
-            'ar': { accountType: 'Asset', category: 'Current Asset' },
-            'supplies': { accountType: 'Asset', category: 'Current Asset' },
-            'inventory': { accountType: 'Asset', category: 'Current Asset' },
-            'prepaid expenses': { accountType: 'Asset', category: 'Current Asset' },
-            'equipment': { accountType: 'Asset', category: 'Fixed Asset' },
-            'furniture': { accountType: 'Asset', category: 'Fixed Asset' },
-            'vehicles': { accountType: 'Asset', category: 'Fixed Asset' },
-            'buildings': { accountType: 'Asset', category: 'Fixed Asset' },
-            'land': { accountType: 'Asset', category: 'Fixed Asset' },
+            'cash': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
+            'petty cash': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
+            'bank': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
+            'checking': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
+            'savings': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
+            'accounts receivable': { accountType: 'Asset', category: 'Current Asset', type: 'income' },
+            'ar': { accountType: 'Asset', category: 'Current Asset', type: 'income' },
+            'supplies': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
+            'inventory': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
+            'prepaid expenses': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
+            'equipment': { accountType: 'Asset', category: 'Fixed Asset', type: 'expense' },
+            'furniture': { accountType: 'Asset', category: 'Fixed Asset', type: 'expense' },
+            'vehicles': { accountType: 'Asset', category: 'Fixed Asset', type: 'expense' },
+            'buildings': { accountType: 'Asset', category: 'Fixed Asset', type: 'expense' },
+            'land': { accountType: 'Asset', category: 'Fixed Asset', type: 'expense' },
             
-            'accounts payable': { accountType: 'Liability', category: 'Current Liability' },
-            'ap': { accountType: 'Liability', category: 'Current Liability' },
-            'credit card': { accountType: 'Liability', category: 'Current Liability' },
-            'credit cards': { accountType: 'Liability', category: 'Current Liability' },
-            'taxes payable': { accountType: 'Liability', category: 'Current Liability' },
-            'accrued expenses': { accountType: 'Liability', category: 'Current Liability' },
-            'notes payable': { accountType: 'Liability', category: 'Long-term Liability' },
-            'loans payable': { accountType: 'Liability', category: 'Long-term Liability' },
-            'loan': { accountType: 'Liability', category: 'Long-term Liability' },
-            'loans': { accountType: 'Liability', category: 'Long-term Liability' },
-            'unearned revenue': { accountType: 'Liability', category: 'Current Liability' },
-            'deferred revenue': { accountType: 'Liability', category: 'Current Liability' },
+            'accounts payable': { accountType: 'Liability', category: 'Current Liability', type: 'expense' },
+            'ap': { accountType: 'Liability', category: 'Current Liability', type: 'expense' },
+            'credit card': { accountType: 'Liability', category: 'Current Liability', type: 'expense' },
+            'credit cards': { accountType: 'Liability', category: 'Current Liability', type: 'expense' },
+            'taxes payable': { accountType: 'Liability', category: 'Current Liability', type: 'expense' },
+            'accrued expenses': { accountType: 'Liability', category: 'Current Liability', type: 'expense' },
+            'notes payable': { accountType: 'Liability', category: 'Long-term Liability', type: 'expense' },
+            'loans payable': { accountType: 'Liability', category: 'Long-term Liability', type: 'expense' },
+            'loan': { accountType: 'Liability', category: 'Long-term Liability', type: 'expense' },
+            'loans': { accountType: 'Liability', category: 'Long-term Liability', type: 'expense' },
+            'unearned revenue': { accountType: 'Liability', category: 'Current Liability', type: 'income' },
+            'deferred revenue': { accountType: 'Liability', category: 'Current Liability', type: 'income' },
             
-            'sales revenue': { accountType: 'Owner\'s Equity', category: 'Revenue' },
-            'sales': { accountType: 'Owner\'s Equity', category: 'Revenue' },
-            'service revenue': { accountType: 'Owner\'s Equity', category: 'Revenue' },
-            'revenue': { accountType: 'Owner\'s Equity', category: 'Revenue' },
-            'interest income': { accountType: 'Owner\'s Equity', category: 'Revenue' },
-            'income': { accountType: 'Owner\'s Equity', category: 'Revenue' },
+            'sales revenue': { accountType: 'Owner\'s Equity', category: 'Revenue', type: 'income' },
+            'sales': { accountType: 'Owner\'s Equity', category: 'Revenue', type: 'income' },
+            'service revenue': { accountType: 'Owner\'s Equity', category: 'Revenue', type: 'income' },
+            'revenue': { accountType: 'Owner\'s Equity', category: 'Revenue', type: 'income' },
+            'interest income': { accountType: 'Owner\'s Equity', category: 'Revenue', type: 'income' },
+            'income': { accountType: 'Owner\'s Equity', category: 'Revenue', type: 'income' },
             
-            'owner\'s capital': { accountType: 'Owner\'s Equity', category: 'Capital' },
-            'capital': { accountType: 'Owner\'s Equity', category: 'Capital' },
-            'retained earnings': { accountType: 'Owner\'s Equity', category: 'Capital' },
-            'common stock': { accountType: 'Owner\'s Equity', category: 'Capital' },
-            'owner\'s draw': { accountType: 'Owner\'s Equity', category: 'Drawings' },
-            'drawings': { accountType: 'Owner\'s Equity', category: 'Drawings' },
+            'owner\'s capital': { accountType: 'Owner\'s Equity', category: 'Capital', type: 'income' },
+            'capital': { accountType: 'Owner\'s Equity', category: 'Capital', type: 'income' },
+            'retained earnings': { accountType: 'Owner\'s Equity', category: 'Capital', type: 'income' },
+            'common stock': { accountType: 'Owner\'s Equity', category: 'Capital', type: 'income' },
+            'owner\'s draw': { accountType: 'Owner\'s Equity', category: 'Drawings', type: 'expense' },
+            'drawings': { accountType: 'Owner\'s Equity', category: 'Drawings', type: 'expense' },
             
-            'rent expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'rent': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'utilities': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'utilities expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'payroll': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'salaries': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'wages': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'supplies expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'insurance': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'insurance expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'depreciation': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'advertising': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'advertising expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'office expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'travel': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'travel expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'meals': { accountType: 'Owner\'s Equity', category: 'Expense' },
-            'meals expense': { accountType: 'Owner\'s Equity', category: 'Expense' }
+            'rent expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'rent': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'utilities': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'utilities expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'payroll': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'salaries': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'wages': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'supplies expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'insurance': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'insurance expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'depreciation': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'advertising': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'advertising expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'office expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'travel': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'travel expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'meals': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
+            'meals expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' }
         };
         
         this.customMappings = this.loadCustomMappings();
@@ -187,9 +187,11 @@ class AccountingApp {
         
         const result = this.classifier.classify(classification);
         if (result.accountType === 'Unknown') {
-            preview.innerHTML = `<span style="color: var(--text-secondary);">Unknown classification - you'll be able to set the account type after adding</span>`;
+            preview.innerHTML = `<span style="color: var(--text-secondary);">Unknown classification - please enter a valid classification</span>`;
         } else {
-            preview.innerHTML = `<strong>Account Type:</strong> ${result.accountType} <span style="color: var(--text-secondary);">(${result.category})</span>`;
+            const typeLabel = result.type === 'income' ? 'Income' : 'Expense';
+            const typeColor = result.type === 'income' ? 'var(--success-color)' : 'var(--danger-color)';
+            preview.innerHTML = `<strong>Type:</strong> <span style="color: ${typeColor};">${typeLabel}</span> | <strong>Account Type:</strong> ${result.accountType} <span style="color: var(--text-secondary);">(${result.category})</span>`;
         }
         preview.style.display = 'block';
     }
@@ -197,33 +199,30 @@ class AccountingApp {
     addTransaction() {
         const description = document.getElementById('description').value;
         const amount = parseFloat(document.getElementById('amount').value);
-        const type = document.getElementById('type').value;
         const date = document.getElementById('date').value;
         const classification = document.getElementById('classification').value.trim();
 
-        if (!description || !amount || !date) {
-            alert('Please fill in all required fields (description, amount, date)');
+        if (!description || !amount || !date || !classification) {
+            alert('Please fill in all required fields (description, amount, date, and classification)');
             return;
         }
         
-        let accountType = '';
-        let category = '';
+        const result = this.classifier.classify(classification);
         
-        if (classification) {
-            const result = this.classifier.classify(classification);
-            accountType = result.accountType;
-            category = result.category;
+        if (result.accountType === 'Unknown') {
+            alert('Unknown classification. Please enter a valid classification like "sales revenue", "rent expense", "supplies", etc.');
+            return;
         }
 
         const transaction = {
             id: Date.now(),
             description,
             amount,
-            type,
+            type: result.type,
             date,
-            classification: classification || '',
-            accountType: accountType,
-            category: category,
+            classification: classification,
+            accountType: result.accountType,
+            category: result.category,
             timestamp: new Date().toISOString()
         };
 
@@ -282,7 +281,7 @@ class AccountingApp {
         if (this.transactions.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="7" class="empty-state">
+                    <td colspan="6" class="empty-state">
                         No transactions yet. Add your first transaction to get started!
                     </td>
                 </tr>
@@ -305,7 +304,6 @@ class AccountingApp {
             row.innerHTML = `
                 <td>${this.formatDate(transaction.date)}</td>
                 <td>${this.escapeHtml(transaction.description)}</td>
-                <td><span style="text-transform: capitalize;">${transaction.type}</span></td>
                 <td>${this.escapeHtml(classification)}</td>
                 <td><strong>${accountType}</strong></td>
                 <td class="${amountClass}">${amountPrefix}${this.formatCurrency(transaction.amount)}</td>
