@@ -64,6 +64,27 @@
                         <label for="date">Date</label>
                         <input type="date" id="date" name="date" required>
                     </div>
+                    <div class="form-group">
+                        <label for="classification">Classification (Optional)</label>
+                        <input type="text" id="classification" name="classification" list="classification-suggestions" placeholder="e.g., supplies, accounts receivable, rent expense">
+                        <datalist id="classification-suggestions">
+                            <option value="Cash">
+                            <option value="Accounts Receivable">
+                            <option value="Supplies">
+                            <option value="Equipment">
+                            <option value="Accounts Payable">
+                            <option value="Credit Card">
+                            <option value="Loans Payable">
+                            <option value="Sales Revenue">
+                            <option value="Service Revenue">
+                            <option value="Rent Expense">
+                            <option value="Utilities">
+                            <option value="Salaries">
+                            <option value="Insurance">
+                            <option value="Advertising">
+                        </datalist>
+                        <div id="account-type-preview" style="display: none; margin-top: 0.5rem; padding: 0.5rem; background: var(--background); border-radius: 4px; font-size: 0.875rem;"></div>
+                    </div>
                     <button type="submit" class="btn btn-primary">Add Transaction</button>
                 </form>
             </div>
@@ -75,6 +96,8 @@
                             <th>Date</th>
                             <th>Description</th>
                             <th>Type</th>
+                            <th>Classification</th>
+                            <th>Account Type</th>
                             <th>Amount</th>
                             <th>Actions</th>
                         </tr>
