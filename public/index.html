@@ -58,7 +58,20 @@
                         <input type="date" id="date" name="date" required>
                     </div>
                     <div class="form-group">
-                        <label for="classification">Classification</label>
+                        <label for="source-account">Source Account (Where it's coming from)</label>
+                        <select id="source-account" name="source-account" required>
+                            <option value="Cash">Cash</option>
+                            <option value="Bank">Bank</option>
+                            <option value="Checking">Checking</option>
+                            <option value="Savings">Savings</option>
+                            <option value="Accounts Receivable">Accounts Receivable</option>
+                            <option value="Accounts Payable">Accounts Payable</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Loans Payable">Loans Payable</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="classification">Classification (Where it's going to)</label>
                         <input type="text" id="classification" name="classification" list="classification-suggestions" placeholder="e.g., supplies, accounts receivable, rent expense" required>
                         <datalist id="classification-suggestions">
                             <option value="Cash">
@@ -85,6 +98,7 @@
                                     <select id="override-type" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
                                         <option value="income">Income</option>
                                         <option value="expense">Expense</option>
+                                        <option value="reclassification">Reclassification</option>
                                     </select>
                                 </div>
                                 <div>
@@ -116,8 +130,9 @@
                         <tr>
                             <th>Date</th>
                             <th>Description</th>
+                            <th>Source</th>
                             <th>Classification</th>
-                            <th>Account Type</th>
+                            <th>Type</th>
                             <th>Amount</th>
                             <th>Actions</th>
                         </tr>

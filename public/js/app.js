@@ -1,68 +1,79 @@
 class AccountingClassifier {
     constructor() {
         this.predefinedMappings = {
-            'cash': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
-            'petty cash': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
-            'bank': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
-            'checking': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
-            'savings': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
-            'accounts receivable': { accountType: 'Asset', category: 'Current Asset', type: 'income' },
-            'ar': { accountType: 'Asset', category: 'Current Asset', type: 'income' },
-            'supplies': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
-            'inventory': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
-            'prepaid expenses': { accountType: 'Asset', category: 'Current Asset', type: 'expense' },
-            'equipment': { accountType: 'Asset', category: 'Fixed Asset', type: 'expense' },
-            'furniture': { accountType: 'Asset', category: 'Fixed Asset', type: 'expense' },
-            'vehicles': { accountType: 'Asset', category: 'Fixed Asset', type: 'expense' },
-            'buildings': { accountType: 'Asset', category: 'Fixed Asset', type: 'expense' },
-            'land': { accountType: 'Asset', category: 'Fixed Asset', type: 'expense' },
+            'cash': { accountType: 'Asset', category: 'Current Asset' },
+            'petty cash': { accountType: 'Asset', category: 'Current Asset' },
+            'bank': { accountType: 'Asset', category: 'Current Asset' },
+            'checking': { accountType: 'Asset', category: 'Current Asset' },
+            'savings': { accountType: 'Asset', category: 'Current Asset' },
+            'accounts receivable': { accountType: 'Asset', category: 'Current Asset' },
+            'ar': { accountType: 'Asset', category: 'Current Asset' },
+            'supplies': { accountType: 'Asset', category: 'Current Asset' },
+            'inventory': { accountType: 'Asset', category: 'Current Asset' },
+            'prepaid expenses': { accountType: 'Asset', category: 'Current Asset' },
+            'equipment': { accountType: 'Asset', category: 'Fixed Asset' },
+            'furniture': { accountType: 'Asset', category: 'Fixed Asset' },
+            'vehicles': { accountType: 'Asset', category: 'Fixed Asset' },
+            'buildings': { accountType: 'Asset', category: 'Fixed Asset' },
+            'land': { accountType: 'Asset', category: 'Fixed Asset' },
             
-            'accounts payable': { accountType: 'Liability', category: 'Current Liability', type: 'expense' },
-            'ap': { accountType: 'Liability', category: 'Current Liability', type: 'expense' },
-            'credit card': { accountType: 'Liability', category: 'Current Liability', type: 'expense' },
-            'credit cards': { accountType: 'Liability', category: 'Current Liability', type: 'expense' },
-            'taxes payable': { accountType: 'Liability', category: 'Current Liability', type: 'expense' },
-            'accrued expenses': { accountType: 'Liability', category: 'Current Liability', type: 'expense' },
-            'notes payable': { accountType: 'Liability', category: 'Long-term Liability', type: 'expense' },
-            'loans payable': { accountType: 'Liability', category: 'Long-term Liability', type: 'expense' },
-            'loan': { accountType: 'Liability', category: 'Long-term Liability', type: 'expense' },
-            'loans': { accountType: 'Liability', category: 'Long-term Liability', type: 'expense' },
-            'unearned revenue': { accountType: 'Liability', category: 'Current Liability', type: 'income' },
-            'deferred revenue': { accountType: 'Liability', category: 'Current Liability', type: 'income' },
+            'accounts payable': { accountType: 'Liability', category: 'Current Liability' },
+            'ap': { accountType: 'Liability', category: 'Current Liability' },
+            'credit card': { accountType: 'Liability', category: 'Current Liability' },
+            'credit cards': { accountType: 'Liability', category: 'Current Liability' },
+            'taxes payable': { accountType: 'Liability', category: 'Current Liability' },
+            'accrued expenses': { accountType: 'Liability', category: 'Current Liability' },
+            'notes payable': { accountType: 'Liability', category: 'Long-term Liability' },
+            'loans payable': { accountType: 'Liability', category: 'Long-term Liability' },
+            'loan': { accountType: 'Liability', category: 'Long-term Liability' },
+            'loans': { accountType: 'Liability', category: 'Long-term Liability' },
+            'unearned revenue': { accountType: 'Liability', category: 'Current Liability' },
+            'deferred revenue': { accountType: 'Liability', category: 'Current Liability' },
             
-            'sales revenue': { accountType: 'Owner\'s Equity', category: 'Revenue', type: 'income' },
-            'sales': { accountType: 'Owner\'s Equity', category: 'Revenue', type: 'income' },
-            'service revenue': { accountType: 'Owner\'s Equity', category: 'Revenue', type: 'income' },
-            'revenue': { accountType: 'Owner\'s Equity', category: 'Revenue', type: 'income' },
-            'interest income': { accountType: 'Owner\'s Equity', category: 'Revenue', type: 'income' },
-            'income': { accountType: 'Owner\'s Equity', category: 'Revenue', type: 'income' },
+            'sales revenue': { accountType: 'Owner\'s Equity', category: 'Revenue' },
+            'sales': { accountType: 'Owner\'s Equity', category: 'Revenue' },
+            'service revenue': { accountType: 'Owner\'s Equity', category: 'Revenue' },
+            'revenue': { accountType: 'Owner\'s Equity', category: 'Revenue' },
+            'interest income': { accountType: 'Owner\'s Equity', category: 'Revenue' },
+            'income': { accountType: 'Owner\'s Equity', category: 'Revenue' },
             
-            'owner\'s capital': { accountType: 'Owner\'s Equity', category: 'Capital', type: 'income' },
-            'capital': { accountType: 'Owner\'s Equity', category: 'Capital', type: 'income' },
-            'retained earnings': { accountType: 'Owner\'s Equity', category: 'Capital', type: 'income' },
-            'common stock': { accountType: 'Owner\'s Equity', category: 'Capital', type: 'income' },
-            'owner\'s draw': { accountType: 'Owner\'s Equity', category: 'Drawings', type: 'expense' },
-            'drawings': { accountType: 'Owner\'s Equity', category: 'Drawings', type: 'expense' },
+            'owner\'s capital': { accountType: 'Owner\'s Equity', category: 'Capital' },
+            'capital': { accountType: 'Owner\'s Equity', category: 'Capital' },
+            'retained earnings': { accountType: 'Owner\'s Equity', category: 'Capital' },
+            'common stock': { accountType: 'Owner\'s Equity', category: 'Capital' },
+            'owner\'s draw': { accountType: 'Owner\'s Equity', category: 'Drawings' },
+            'drawings': { accountType: 'Owner\'s Equity', category: 'Drawings' },
             
-            'rent expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'rent': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'utilities': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'utilities expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'payroll': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'salaries': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'wages': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'supplies expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'insurance': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'insurance expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'depreciation': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'advertising': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'advertising expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'office expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'travel': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'travel expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'meals': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' },
-            'meals expense': { accountType: 'Owner\'s Equity', category: 'Expense', type: 'expense' }
+            'rent expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'rent': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'utilities': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'utilities expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'payroll': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'salaries': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'wages': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'supplies expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'insurance': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'insurance expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'depreciation': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'advertising': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'advertising expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'office expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'travel': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'travel expense': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'meals': { accountType: 'Owner\'s Equity', category: 'Expense' },
+            'meals expense': { accountType: 'Owner\'s Equity', category: 'Expense' }
         };
+        
+        this.sourceAccounts = [
+            'Cash',
+            'Bank',
+            'Checking',
+            'Savings',
+            'Accounts Receivable',
+            'Accounts Payable',
+            'Credit Card',
+            'Loans Payable'
+        ];
         
         this.customMappings = this.loadCustomMappings();
     }
@@ -120,6 +131,38 @@ class AccountingClassifier {
     getCommonClassifications() {
         return Object.keys(this.predefinedMappings).sort();
     }
+    
+    getSourceAccounts() {
+        return this.sourceAccounts;
+    }
+    
+    determineEntryType(sourceAccount, destinationClassification) {
+        const sourceInfo = this.classify(sourceAccount);
+        const destInfo = this.classify(destinationClassification);
+        
+        if (destInfo.category === 'Revenue') {
+            return 'income';
+        }
+        
+        if (destInfo.category === 'Expense') {
+            return 'expense';
+        }
+        
+        const balanceSheetTypes = ['Asset', 'Liability'];
+        const capitalTypes = ['Capital', 'Drawings'];
+        
+        if (balanceSheetTypes.includes(sourceInfo.accountType) && 
+            balanceSheetTypes.includes(destInfo.accountType)) {
+            return 'reclassification';
+        }
+        
+        if (capitalTypes.includes(destInfo.category) && 
+            balanceSheetTypes.includes(sourceInfo.accountType)) {
+            return 'reclassification';
+        }
+        
+        return 'expense';
+    }
 }
 
 class AccountingApp {
@@ -160,6 +203,13 @@ class AccountingApp {
                 this.updateAccountTypePreview();
             });
         }
+        
+        const sourceAccountSelect = document.getElementById('source-account');
+        if (sourceAccountSelect) {
+            sourceAccountSelect.addEventListener('change', () => {
+                this.updateAccountTypePreview();
+            });
+        }
     }
 
     switchSection(sectionId) {
@@ -189,6 +239,7 @@ class AccountingApp {
     
     updateAccountTypePreview() {
         const classificationInput = document.getElementById('classification');
+        const sourceAccountSelect = document.getElementById('source-account');
         const preview = document.getElementById('account-type-preview');
         
         if (!classificationInput || !preview) return;
@@ -201,13 +252,27 @@ class AccountingApp {
             return;
         }
         
+        const sourceAccount = sourceAccountSelect ? sourceAccountSelect.value : 'Cash';
         const result = this.classifier.classify(classification);
+        
         if (result.accountType === 'Unknown') {
             preview.innerHTML = `<span style="color: var(--text-secondary);">Unknown classification - <a href="#" onclick="app.showOverridePanel(); return false;" style="color: var(--primary-color);">define it here</a></span>`;
         } else {
-            const typeLabel = result.type === 'income' ? 'Income' : 'Expense';
-            const typeColor = result.type === 'income' ? 'var(--success-color)' : 'var(--danger-color)';
-            preview.innerHTML = `<strong>Type:</strong> <span style="color: ${typeColor};">${typeLabel}</span> | <strong>Account Type:</strong> ${result.accountType} <span style="color: var(--text-secondary);">(${result.category})</span> | <a href="#" onclick="app.showOverridePanel(); return false;" style="color: var(--primary-color); font-size: 0.9em;">Change</a>`;
+            const entryType = this.classifier.determineEntryType(sourceAccount, classification);
+            let typeLabel, typeColor;
+            
+            if (entryType === 'income') {
+                typeLabel = 'Income';
+                typeColor = 'var(--success-color)';
+            } else if (entryType === 'expense') {
+                typeLabel = 'Expense';
+                typeColor = 'var(--danger-color)';
+            } else {
+                typeLabel = 'Reclassification';
+                typeColor = 'var(--primary-color)';
+            }
+            
+            preview.innerHTML = `<strong>Type:</strong> <span style="color: ${typeColor};">${typeLabel}</span> | <strong>From:</strong> ${sourceAccount} | <strong>To:</strong> ${result.accountType} <span style="color: var(--text-secondary);">(${result.category})</span> | <a href="#" onclick="app.showOverridePanel(); return false;" style="color: var(--primary-color); font-size: 0.9em;">Change</a>`;
         }
         preview.style.display = 'block';
     }
@@ -260,21 +325,25 @@ class AccountingApp {
         const amount = parseFloat(document.getElementById('amount').value);
         const date = document.getElementById('date').value;
         const classification = document.getElementById('classification').value.trim();
+        const sourceAccount = document.getElementById('source-account').value;
 
-        if (!description || !amount || !date || !classification) {
-            alert('Please fill in all required fields (description, amount, date, and classification)');
+        if (!description || !amount || !date || !classification || !sourceAccount) {
+            alert('Please fill in all required fields (description, amount, date, classification, and source account)');
             return;
         }
         
-        let type, accountType, category;
+        let entryType, accountType, category, sourceAccountType;
+        
+        const sourceInfo = this.classifier.classify(sourceAccount);
+        sourceAccountType = sourceInfo.accountType;
         
         if (this.overrideType && this.overrideAccountType) {
-            type = this.overrideType;
+            entryType = this.overrideType;
             accountType = this.overrideAccountType;
             category = 'Custom';
             
             if (this.overrideRemember) {
-                this.classifier.saveCustomMapping(classification, accountType, category, type);
+                this.classifier.saveCustomMapping(classification, accountType, category, entryType);
             }
             
             this.overrideType = null;
@@ -288,7 +357,7 @@ class AccountingApp {
                 return;
             }
             
-            type = result.type;
+            entryType = this.classifier.determineEntryType(sourceAccount, classification);
             accountType = result.accountType;
             category = result.category;
         }
@@ -297,9 +366,12 @@ class AccountingApp {
             id: Date.now(),
             description,
             amount,
-            type,
+            entryType,
+            type: entryType,
             date,
             classification: classification,
+            sourceAccount,
+            sourceAccountType,
             accountType,
             category,
             timestamp: new Date().toISOString()
@@ -313,6 +385,7 @@ class AccountingApp {
 
         document.getElementById('add-transaction-form').reset();
         this.setTodayDate();
+        this.resetSourceAccount();
         this.hideOverridePanel();
         
         const preview = document.getElementById('account-type-preview');
@@ -322,6 +395,13 @@ class AccountingApp {
         }
 
         this.showNotification('Transaction added successfully!');
+    }
+    
+    resetSourceAccount() {
+        const sourceSelect = document.getElementById('source-account');
+        if (sourceSelect) {
+            sourceSelect.value = 'Cash';
+        }
     }
 
     deleteTransaction(id) {
@@ -344,8 +424,9 @@ class AccountingApp {
         const transaction = this.transactions.find(t => t.id === id);
         if (!transaction) return;
         
+        const sourceAccount = document.getElementById(`edit-source-${id}`).value;
         const classification = document.getElementById(`edit-classification-${id}`).value.trim();
-        const type = document.getElementById(`edit-type-${id}`).value;
+        const entryType = document.getElementById(`edit-type-${id}`).value;
         const accountType = document.getElementById(`edit-account-type-${id}`).value;
         const rememberMapping = document.getElementById(`edit-remember-${id}`).checked;
         const applyToAll = document.getElementById(`edit-apply-all-${id}`).checked;
@@ -357,21 +438,29 @@ class AccountingApp {
         
         const oldClassification = transaction.classification;
         
+        const sourceInfo = this.classifier.classify(sourceAccount);
+        
+        transaction.sourceAccount = sourceAccount;
+        transaction.sourceAccountType = sourceInfo.accountType;
         transaction.classification = classification;
-        transaction.type = type;
+        transaction.entryType = entryType;
+        transaction.type = entryType;
         transaction.accountType = accountType;
         
         if (rememberMapping) {
             const result = this.classifier.classify(classification);
-            this.classifier.saveCustomMapping(classification, accountType, result.category || 'Uncategorized', type);
+            this.classifier.saveCustomMapping(classification, accountType, result.category || 'Uncategorized', entryType);
         }
         
         if (applyToAll && oldClassification) {
             const normalizedOld = this.classifier.normalize(oldClassification);
             this.transactions.forEach(t => {
                 if (this.classifier.normalize(t.classification) === normalizedOld) {
+                    t.sourceAccount = sourceAccount;
+                    t.sourceAccountType = sourceInfo.accountType;
                     t.classification = classification;
-                    t.type = type;
+                    t.entryType = entryType;
+                    t.type = entryType;
                     t.accountType = accountType;
                 }
             });
@@ -399,11 +488,11 @@ class AccountingApp {
 
     updateDashboard() {
         const income = this.transactions
-            .filter(t => t.type === 'income')
+            .filter(t => (t.entryType || t.type) === 'income')
             .reduce((sum, t) => sum + t.amount, 0);
 
         const expenses = this.transactions
-            .filter(t => t.type === 'expense')
+            .filter(t => (t.entryType || t.type) === 'expense')
             .reduce((sum, t) => sum + t.amount, 0);
 
         const balance = income - expenses;
@@ -423,7 +512,7 @@ class AccountingApp {
         if (this.transactions.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="6" class="empty-state">
+                    <td colspan="7" class="empty-state">
                         No transactions yet. Add your first transaction to get started!
                     </td>
                 </tr>
@@ -439,9 +528,25 @@ class AccountingApp {
             const row = document.createElement('tr');
             
             if (this.editingTransactionId === transaction.id) {
+                const currentEntryType = transaction.entryType || transaction.type || 'expense';
+                const currentSourceAccount = transaction.sourceAccount || 'Cash';
+                
                 row.innerHTML = `
-                    <td colspan="6" style="padding: 1rem;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <td colspan="7" style="padding: 1rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Source Account</label>
+                                <select id="edit-source-${transaction.id}" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                                    <option value="Cash" ${currentSourceAccount === 'Cash' ? 'selected' : ''}>Cash</option>
+                                    <option value="Bank" ${currentSourceAccount === 'Bank' ? 'selected' : ''}>Bank</option>
+                                    <option value="Checking" ${currentSourceAccount === 'Checking' ? 'selected' : ''}>Checking</option>
+                                    <option value="Savings" ${currentSourceAccount === 'Savings' ? 'selected' : ''}>Savings</option>
+                                    <option value="Accounts Receivable" ${currentSourceAccount === 'Accounts Receivable' ? 'selected' : ''}>Accounts Receivable</option>
+                                    <option value="Accounts Payable" ${currentSourceAccount === 'Accounts Payable' ? 'selected' : ''}>Accounts Payable</option>
+                                    <option value="Credit Card" ${currentSourceAccount === 'Credit Card' ? 'selected' : ''}>Credit Card</option>
+                                    <option value="Loans Payable" ${currentSourceAccount === 'Loans Payable' ? 'selected' : ''}>Loans Payable</option>
+                                </select>
+                            </div>
                             <div>
                                 <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Classification</label>
                                 <input type="text" id="edit-classification-${transaction.id}" value="${this.escapeHtml(transaction.classification || '')}" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
@@ -449,8 +554,9 @@ class AccountingApp {
                             <div>
                                 <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Type</label>
                                 <select id="edit-type-${transaction.id}" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
-                                    <option value="income" ${transaction.type === 'income' ? 'selected' : ''}>Income</option>
-                                    <option value="expense" ${transaction.type === 'expense' ? 'selected' : ''}>Expense</option>
+                                    <option value="income" ${currentEntryType === 'income' ? 'selected' : ''}>Income</option>
+                                    <option value="expense" ${currentEntryType === 'expense' ? 'selected' : ''}>Expense</option>
+                                    <option value="reclassification" ${currentEntryType === 'reclassification' ? 'selected' : ''}>Reclassification</option>
                                 </select>
                             </div>
                             <div>
@@ -462,7 +568,7 @@ class AccountingApp {
                                     <option value="Unknown" ${transaction.accountType === 'Unknown' ? 'selected' : ''}>Unknown</option>
                                 </select>
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem; justify-content: center;">
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem; justify-content: center; grid-column: span 2;">
                                 <label style="display: flex; align-items: center; gap: 0.5rem;">
                                     <input type="checkbox" id="edit-remember-${transaction.id}" checked>
                                     <span>Remember this mapping</span>
@@ -480,17 +586,35 @@ class AccountingApp {
                     </td>
                 `;
             } else {
-                const amountClass = transaction.type === 'income' ? 'transaction-income' : 'transaction-expense';
-                const amountPrefix = transaction.type === 'income' ? '+' : '-';
+                const entryType = transaction.entryType || transaction.type;
+                let amountClass, amountPrefix, typeLabel, typeColor;
+                
+                if (entryType === 'income') {
+                    amountClass = 'transaction-income';
+                    amountPrefix = '+';
+                    typeLabel = 'Income';
+                    typeColor = 'var(--success-color)';
+                } else if (entryType === 'expense') {
+                    amountClass = 'transaction-expense';
+                    amountPrefix = '-';
+                    typeLabel = 'Expense';
+                    typeColor = 'var(--danger-color)';
+                } else {
+                    amountClass = '';
+                    amountPrefix = '';
+                    typeLabel = 'Reclassification';
+                    typeColor = 'var(--primary-color)';
+                }
                 
                 const classification = transaction.classification || '-';
-                const accountType = transaction.accountType || '-';
+                const sourceAccount = transaction.sourceAccount || 'Cash';
                 
                 row.innerHTML = `
                     <td>${this.formatDate(transaction.date)}</td>
                     <td>${this.escapeHtml(transaction.description)}</td>
+                    <td>${this.escapeHtml(sourceAccount)}</td>
                     <td>${this.escapeHtml(classification)}</td>
-                    <td><strong>${accountType}</strong></td>
+                    <td><span style="color: ${typeColor}; font-weight: 500;">${typeLabel}</span></td>
                     <td class="${amountClass}">${amountPrefix}${this.formatCurrency(transaction.amount)}</td>
                     <td>
                         <button class="btn" onclick="app.startEditTransaction(${transaction.id})" style="margin-right: 0.5rem;">Edit</button>
@@ -513,6 +637,7 @@ class AccountingApp {
 
         const monthlyData = this.getMonthlyData();
         const accountTypeData = this.getAccountTypeData();
+        const reclassifications = this.transactions.filter(t => (t.entryType || t.type) === 'reclassification');
         
         let html = '<h3>Monthly Summary</h3>';
         html += '<div style="overflow-x: auto;"><table><thead><tr><th>Month</th><th>Income</th><th>Expenses</th><th>Net</th></tr></thead><tbody>';
@@ -531,6 +656,30 @@ class AccountingApp {
         });
         
         html += '</tbody></table></div>';
+        
+        if (reclassifications.length > 0) {
+            html += '<h3 style="margin-top: 2rem;">Reclassifications</h3>';
+            html += '<p style="color: var(--text-secondary); margin-bottom: 1rem;">Balance sheet transfers that don\'t affect income or expenses</p>';
+            html += '<div style="overflow-x: auto;"><table><thead><tr><th>Date</th><th>Description</th><th>From</th><th>To</th><th>Amount</th></tr></thead><tbody>';
+            
+            const sortedReclassifications = [...reclassifications].sort((a, b) => 
+                new Date(b.date) - new Date(a.date)
+            );
+            
+            sortedReclassifications.forEach(transaction => {
+                html += `
+                    <tr>
+                        <td>${this.formatDate(transaction.date)}</td>
+                        <td>${this.escapeHtml(transaction.description)}</td>
+                        <td>${this.escapeHtml(transaction.sourceAccount || 'Cash')}</td>
+                        <td>${this.escapeHtml(transaction.classification || '-')}</td>
+                        <td>${this.formatCurrency(transaction.amount)}</td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table></div>';
+        }
         
         html += '<h3 style="margin-top: 2rem;">By Account Type</h3>';
         html += '<div style="overflow-x: auto;"><table><thead><tr><th>Account Type</th><th>Total Amount</th><th>Transaction Count</th></tr></thead><tbody>';
@@ -561,6 +710,12 @@ class AccountingApp {
         const monthlyMap = {};
 
         this.transactions.forEach(transaction => {
+            const entryType = transaction.entryType || transaction.type;
+            
+            if (entryType === 'reclassification') {
+                return;
+            }
+            
             const date = new Date(transaction.date);
             const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
             const monthName = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
@@ -574,7 +729,7 @@ class AccountingApp {
                 };
             }
 
-            if (transaction.type === 'income') {
+            if (entryType === 'income') {
                 monthlyMap[monthKey].income += transaction.amount;
             } else {
                 monthlyMap[monthKey].expenses += transaction.amount;
