@@ -1,0 +1,21 @@
+{
+  "name": "xanders-bean-counting",
+  "version": "1.0.0",
+  "description": "Xanders Accounting Web application",
+  "main": "src/js/app.js",
+  "scripts": {
+    "start": "npx http-server public -p 8080 -o",
+    "dev": "npx http-server public -p 8080 -o",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix",
+    "format": "prettier --write \"src/**/*.{js,css,html}\" \"public/**/*.html\""
+  },
+  "keywords": ["accounting", "web-app"],
+  "author": "Xander Terry",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "http-server": "^14.1.1"
+  }
+}
