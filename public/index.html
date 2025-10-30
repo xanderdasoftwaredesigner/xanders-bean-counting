@@ -77,6 +77,34 @@
                             <option value="Advertising">
                         </datalist>
                         <div id="account-type-preview" style="display: none; margin-top: 0.5rem; padding: 0.5rem; background: var(--background); border-radius: 4px; font-size: 0.875rem;"></div>
+                        <div id="override-panel" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--background); border: 1px solid var(--border-color); border-radius: 4px;">
+                            <h4 style="margin-top: 0; margin-bottom: 1rem;">Override AI Classification</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                <div>
+                                    <label for="override-type" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Type</label>
+                                    <select id="override-type" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                                        <option value="income">Income</option>
+                                        <option value="expense">Expense</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="override-account-type" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Account Type</label>
+                                    <select id="override-account-type" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                                        <option value="Asset">Asset</option>
+                                        <option value="Liability">Liability</option>
+                                        <option value="Owner's Equity">Owner's Equity</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                                <input type="checkbox" id="override-remember" checked>
+                                <span>Remember this mapping for future transactions</span>
+                            </label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button type="button" class="btn btn-primary" onclick="app.applyOverride()">Apply</button>
+                                <button type="button" class="btn" onclick="app.hideOverridePanel()">Cancel</button>
+                            </div>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Transaction</button>
                 </form>
@@ -107,6 +135,11 @@
                 <div id="monthly-summary">
                     <p>No data available yet. Add some transactions to see your reports.</p>
                 </div>
+            </div>
+            <div style="margin-top: 2rem; padding: 1rem; background: var(--background); border: 1px solid var(--border-color); border-radius: 4px;">
+                <h3>AI Agent Settings</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Manage the AI classification agent's learned mappings. The agent learns from your corrections to improve future classifications.</p>
+                <button class="btn btn-danger" onclick="app.resetLearnedMappings()">Reset Learned Mappings</button>
             </div>
         </section>
     </main>

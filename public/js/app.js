@@ -91,10 +91,25 @@ class AccountingClassifier {
         return { accountType: 'Unknown', category: 'Uncategorized' };
     }
     
-    saveCustomMapping(classification, accountType, category) {
+    saveCustomMapping(classification, accountType, category, type) {
         const normalized = this.normalize(classification);
-        this.customMappings[normalized] = { accountType, category };
+        this.customMappings[normalized] = { accountType, category, type };
         localStorage.setItem('customMappings', JSON.stringify(this.customMappings));
+    }
+    
+    deleteCustomMapping(classification) {
+        const normalized = this.normalize(classification);
+        delete this.customMappings[normalized];
+        localStorage.setItem('customMappings', JSON.stringify(this.customMappings));
+    }
+    
+    getCustomClassifications() {
+        return Object.keys(this.customMappings).sort();
+    }
+    
+    resetCustomMappings() {
+        this.customMappings = {};
+        localStorage.removeItem('customMappings');
     }
     
     loadCustomMappings() {
@@ -182,18 +197,62 @@ class AccountingApp {
         if (!classification) {
             preview.textContent = '';
             preview.style.display = 'none';
+            this.hideOverridePanel();
             return;
         }
         
         const result = this.classifier.classify(classification);
         if (result.accountType === 'Unknown') {
-            preview.innerHTML = `<span style="color: var(--text-secondary);">Unknown classification - please enter a valid classification</span>`;
+            preview.innerHTML = `<span style="color: var(--text-secondary);">Unknown classification - <a href="#" onclick="app.showOverridePanel(); return false;" style="color: var(--primary-color);">define it here</a></span>`;
         } else {
             const typeLabel = result.type === 'income' ? 'Income' : 'Expense';
             const typeColor = result.type === 'income' ? 'var(--success-color)' : 'var(--danger-color)';
-            preview.innerHTML = `<strong>Type:</strong> <span style="color: ${typeColor};">${typeLabel}</span> | <strong>Account Type:</strong> ${result.accountType} <span style="color: var(--text-secondary);">(${result.category})</span>`;
+            preview.innerHTML = `<strong>Type:</strong> <span style="color: ${typeColor};">${typeLabel}</span> | <strong>Account Type:</strong> ${result.accountType} <span style="color: var(--text-secondary);">(${result.category})</span> | <a href="#" onclick="app.showOverridePanel(); return false;" style="color: var(--primary-color); font-size: 0.9em;">Change</a>`;
         }
         preview.style.display = 'block';
+    }
+    
+    showOverridePanel() {
+        const panel = document.getElementById('override-panel');
+        if (!panel) return;
+        
+        const classificationInput = document.getElementById('classification');
+        const classification = classificationInput.value.trim();
+        const result = this.classifier.classify(classification);
+        
+        document.getElementById('override-type').value = result.type || 'expense';
+        document.getElementById('override-account-type').value = result.accountType !== 'Unknown' ? result.accountType : 'Asset';
+        
+        panel.style.display = 'block';
+    }
+    
+    hideOverridePanel() {
+        const panel = document.getElementById('override-panel');
+        if (panel) {
+            panel.style.display = 'none';
+        }
+    }
+    
+    applyOverride() {
+        const classificationInput = document.getElementById('classification');
+        const classification = classificationInput.value.trim();
+        
+        if (!classification) {
+            alert('Please enter a classification first');
+            return;
+        }
+        
+        this.overrideType = document.getElementById('override-type').value;
+        this.overrideAccountType = document.getElementById('override-account-type').value;
+        this.overrideRemember = document.getElementById('override-remember').checked;
+        
+        this.updateAccountTypePreview();
+        this.hideOverridePanel();
+        
+        const preview = document.getElementById('account-type-preview');
+        const typeLabel = this.overrideType === 'income' ? 'Income' : 'Expense';
+        const typeColor = this.overrideType === 'income' ? 'var(--success-color)' : 'var(--danger-color)';
+        preview.innerHTML = `<strong>Type:</strong> <span style="color: ${typeColor};">${typeLabel}</span> | <strong>Account Type:</strong> ${this.overrideAccountType} <span style="color: var(--text-secondary);">(Override)</span> | <a href="#" onclick="app.showOverridePanel(); return false;" style="color: var(--primary-color); font-size: 0.9em;">Change</a>`;
     }
 
     addTransaction() {
@@ -207,22 +266,42 @@ class AccountingApp {
             return;
         }
         
-        const result = this.classifier.classify(classification);
+        let type, accountType, category;
         
-        if (result.accountType === 'Unknown') {
-            alert('Unknown classification. Please enter a valid classification like "sales revenue", "rent expense", "supplies", etc.');
-            return;
+        if (this.overrideType && this.overrideAccountType) {
+            type = this.overrideType;
+            accountType = this.overrideAccountType;
+            category = 'Custom';
+            
+            if (this.overrideRemember) {
+                this.classifier.saveCustomMapping(classification, accountType, category, type);
+            }
+            
+            this.overrideType = null;
+            this.overrideAccountType = null;
+            this.overrideRemember = false;
+        } else {
+            const result = this.classifier.classify(classification);
+            
+            if (result.accountType === 'Unknown') {
+                alert('Unknown classification. Please enter a valid classification or use the "define it here" link to set custom values.');
+                return;
+            }
+            
+            type = result.type;
+            accountType = result.accountType;
+            category = result.category;
         }
 
         const transaction = {
             id: Date.now(),
             description,
             amount,
-            type: result.type,
+            type,
             date,
             classification: classification,
-            accountType: result.accountType,
-            category: result.category,
+            accountType,
+            category,
             timestamp: new Date().toISOString()
         };
 
@@ -234,6 +313,7 @@ class AccountingApp {
 
         document.getElementById('add-transaction-form').reset();
         this.setTodayDate();
+        this.hideOverridePanel();
         
         const preview = document.getElementById('account-type-preview');
         if (preview) {
@@ -252,6 +332,68 @@ class AccountingApp {
             this.renderTransactions();
             this.updateReports();
             this.showNotification('Transaction deleted successfully!');
+        }
+    }
+    
+    startEditTransaction(id) {
+        this.editingTransactionId = id;
+        this.renderTransactions();
+    }
+    
+    saveTransactionEdits(id) {
+        const transaction = this.transactions.find(t => t.id === id);
+        if (!transaction) return;
+        
+        const classification = document.getElementById(`edit-classification-${id}`).value.trim();
+        const type = document.getElementById(`edit-type-${id}`).value;
+        const accountType = document.getElementById(`edit-account-type-${id}`).value;
+        const rememberMapping = document.getElementById(`edit-remember-${id}`).checked;
+        const applyToAll = document.getElementById(`edit-apply-all-${id}`).checked;
+        
+        if (!classification) {
+            alert('Classification is required');
+            return;
+        }
+        
+        const oldClassification = transaction.classification;
+        
+        transaction.classification = classification;
+        transaction.type = type;
+        transaction.accountType = accountType;
+        
+        if (rememberMapping) {
+            const result = this.classifier.classify(classification);
+            this.classifier.saveCustomMapping(classification, accountType, result.category || 'Uncategorized', type);
+        }
+        
+        if (applyToAll && oldClassification) {
+            const normalizedOld = this.classifier.normalize(oldClassification);
+            this.transactions.forEach(t => {
+                if (this.classifier.normalize(t.classification) === normalizedOld) {
+                    t.classification = classification;
+                    t.type = type;
+                    t.accountType = accountType;
+                }
+            });
+        }
+        
+        this.editingTransactionId = null;
+        this.saveTransactions();
+        this.updateDashboard();
+        this.renderTransactions();
+        this.updateReports();
+        this.showNotification('Transaction updated successfully!');
+    }
+    
+    cancelEdit() {
+        this.editingTransactionId = null;
+        this.renderTransactions();
+    }
+    
+    resetLearnedMappings() {
+        if (confirm('Are you sure you want to reset all learned mappings? This will remove all custom classifications you have taught the system.')) {
+            this.classifier.resetCustomMappings();
+            this.showNotification('Learned mappings have been reset!');
         }
     }
 
@@ -295,24 +437,68 @@ class AccountingApp {
 
         sortedTransactions.forEach(transaction => {
             const row = document.createElement('tr');
-            const amountClass = transaction.type === 'income' ? 'transaction-income' : 'transaction-expense';
-            const amountPrefix = transaction.type === 'income' ? '+' : '-';
             
-            const classification = transaction.classification || '-';
-            const accountType = transaction.accountType || '-';
+            if (this.editingTransactionId === transaction.id) {
+                row.innerHTML = `
+                    <td colspan="6" style="padding: 1rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Classification</label>
+                                <input type="text" id="edit-classification-${transaction.id}" value="${this.escapeHtml(transaction.classification || '')}" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Type</label>
+                                <select id="edit-type-${transaction.id}" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                                    <option value="income" ${transaction.type === 'income' ? 'selected' : ''}>Income</option>
+                                    <option value="expense" ${transaction.type === 'expense' ? 'selected' : ''}>Expense</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Account Type</label>
+                                <select id="edit-account-type-${transaction.id}" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                                    <option value="Asset" ${transaction.accountType === 'Asset' ? 'selected' : ''}>Asset</option>
+                                    <option value="Liability" ${transaction.accountType === 'Liability' ? 'selected' : ''}>Liability</option>
+                                    <option value="Owner's Equity" ${transaction.accountType === "Owner's Equity" ? 'selected' : ''}>Owner's Equity</option>
+                                    <option value="Unknown" ${transaction.accountType === 'Unknown' ? 'selected' : ''}>Unknown</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem; justify-content: center;">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" id="edit-remember-${transaction.id}" checked>
+                                    <span>Remember this mapping</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" id="edit-apply-all-${transaction.id}">
+                                    <span>Apply to all existing "${this.escapeHtml(transaction.classification || '')}"</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary" onclick="app.saveTransactionEdits(${transaction.id})">Save</button>
+                            <button class="btn" onclick="app.cancelEdit()">Cancel</button>
+                        </div>
+                    </td>
+                `;
+            } else {
+                const amountClass = transaction.type === 'income' ? 'transaction-income' : 'transaction-expense';
+                const amountPrefix = transaction.type === 'income' ? '+' : '-';
+                
+                const classification = transaction.classification || '-';
+                const accountType = transaction.accountType || '-';
+                
+                row.innerHTML = `
+                    <td>${this.formatDate(transaction.date)}</td>
+                    <td>${this.escapeHtml(transaction.description)}</td>
+                    <td>${this.escapeHtml(classification)}</td>
+                    <td><strong>${accountType}</strong></td>
+                    <td class="${amountClass}">${amountPrefix}${this.formatCurrency(transaction.amount)}</td>
+                    <td>
+                        <button class="btn" onclick="app.startEditTransaction(${transaction.id})" style="margin-right: 0.5rem;">Edit</button>
+                        <button class="btn btn-danger" onclick="app.deleteTransaction(${transaction.id})">Delete</button>
+                    </td>
+                `;
+            }
             
-            row.innerHTML = `
-                <td>${this.formatDate(transaction.date)}</td>
-                <td>${this.escapeHtml(transaction.description)}</td>
-                <td>${this.escapeHtml(classification)}</td>
-                <td><strong>${accountType}</strong></td>
-                <td class="${amountClass}">${amountPrefix}${this.formatCurrency(transaction.amount)}</td>
-                <td>
-                    <button class="btn btn-danger" onclick="app.deleteTransaction(${transaction.id})">
-                        Delete
-                    </button>
-                </td>
-            `;
             tbody.appendChild(row);
         });
     }
